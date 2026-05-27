@@ -7,15 +7,26 @@
 
     <div class="{{ app.request.headers.get('X-Requested-With') is not null ? 'd-none' }} d-print-block p-0 w-100">
 
+        {% set break = false %}
+
         {% for item in codes %}
 
-            {% set img_host =  item.codeCdn == true  ? CDN_HOST : '' %}
-            {% set img_dir = item.codeImage %}
-            {% set img_file = (img_host is empty ? '/image.' : '/small.') ~ item.codeExt %}
-            {% set image_path = img_host ~ img_dir ~ img_file %}
+            {% if break %}
+                {# разрыв старницы #}
+                <div style="page-break-after: always !important;"></div>
+            {% endif %}
 
-            <img src="{{ image_path }}" alt="Честный знак">
-            <div style="page-break-after: always !important;"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"
+                 style="height: 140px; max-height: 140px; max-width: 200px; margin-left: 20px;"
+                 fill="currentColor"
+                 viewBox="8 8 40 40">
+                {{ item.image|raw }}
+            </svg>
+
+            <div>{{ item.code }}</div>
+            <div>{{ item.name }}</div>
+
+            {% set break = true %}
 
         {% endfor %}
 

@@ -90,6 +90,7 @@ final class AllProductSignByOrderRepository implements AllProductSignByOrderInte
             ->where('ord.id = :ord')
             ->setParameter('ord', $this->order, OrderUid::TYPE);
 
+
         /** Продукты в заказе */
         $dbal
             ->join(
@@ -98,6 +99,7 @@ final class AllProductSignByOrderRepository implements AllProductSignByOrderInte
                 'orders_product',
                 'orders_product.event = ord.event',
             );
+
 
         /** Единицы продукции */
         $dbal

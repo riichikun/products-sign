@@ -47,6 +47,20 @@ final readonly class ProductSignByOrderResult
         private ?string $comment,
 
         private ?string $product = null,
+
+        private ?string $product_name,
+
+        private ?string $product_offer_value,
+        private ?string $product_offer_reference,
+        private ?string $product_offer_postfix,
+
+        private ?string $product_variation_value,
+        private ?string $product_variation_reference,
+        private ?string $product_variation_postfix,
+
+        private ?string $product_modification_value,
+        private ?string $product_modification_reference,
+        private ?string $product_modification_postfix,
     ) {}
 
     public function getSignId(): ProductSignUid
@@ -96,11 +110,21 @@ final readonly class ProductSignByOrderResult
             }
 
             return implode('', $chars);
-
         }
 
         return $this->code_string;
+    }
 
+    public function getSmallCodeNoGTIN(): string
+    {
+        preg_match('/\\(\\d+\\).*?\\(\\d+\\)(.*?)\\(\\d+\\)/', $this->code_string, $matches);
+
+        if(isset($matches[1]))
+        {
+            return $matches[1];
+        }
+
+        return $this->code_string;
     }
 
     public function getBigCode(): string
@@ -133,5 +157,63 @@ final readonly class ProductSignByOrderResult
     public function getProduct(): ?OrderProductItemConst
     {
         return true === empty($this->product) ? null : new OrderProductItemConst($this->product);
+    }
+
+    public function getProductName(): ?string
+    {
+        return $this->product_name;
+    }
+
+    /** Offer */
+
+    public function getProductOfferValue(): ?string
+    {
+        return $this->product_offer_value;
+    }
+
+    public function getProductOfferPostfix(): ?string
+    {
+        return $this->product_offer_postfix;
+    }
+
+    public function getProductOfferReference(): ?string
+    {
+        return $this->product_offer_reference;
+    }
+
+
+    /** Variation */
+
+    public function getProductVariationValue(): ?string
+    {
+        return $this->product_variation_value;
+    }
+
+    public function getProductVariationPostfix(): ?string
+    {
+        return $this->product_variation_postfix;
+    }
+
+    public function getProductVariationReference(): ?string
+    {
+        return $this->product_variation_reference;
+    }
+
+
+    /** Modification */
+
+    public function getProductModificationValue(): ?string
+    {
+        return $this->product_modification_value;
+    }
+
+    public function getProductModificationPostfix(): ?string
+    {
+        return $this->product_modification_postfix;
+    }
+
+    public function getProductModificationReference(): ?string
+    {
+        return $this->product_modification_reference;
     }
 }
